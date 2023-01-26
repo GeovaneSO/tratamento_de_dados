@@ -1,19 +1,47 @@
 <!DOCTYPE html>
+{% load crispy_forms_tags %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Success</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
 </head>
 <body>
-
-    <ul>
-        {% for dict in list%}
-            <li> Saldo de {{dict.name }}: {{ dict.value }}</li>
-        {% endfor %}
-
-    </ul>
+    <div 
+        class="container" 
+        style="
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            margin-top: 10%;">
+        <h3 style="
+            width: 20rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-left: 20px;" >
+            Lista das operações
+        </h3>
+        <ul style="width: 20rem;"  class="list-group">
+            {% for dict in list%}
+                <li style="
+                    width: 22rem; 
+                    height: 4rem;
+                    justify-content: flex-start; 
+                    align-items: center;" 
+                    class="list-group-item list-group-item-action d-flex "> 
+                    Saldo de {{dict.name }}: {{ dict.value }}
+                </li>
+            {% endfor %}
     
+        </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
 </body>
 </html>
