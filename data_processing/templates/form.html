@@ -7,11 +7,15 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Form</h1>
+    <!-- <h1>Form</h1> -->
     <form action="{% url 'upload'%}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="file" id="file">
-        <button type="submit">submit</button>
+        {% csrf_token %}    
+        <!-- <input type="file" name="file" id="file">-->
+        <table>
+            {{form.as_table}}
+            
+        </table>
+        <button type="submit">submit</button> 
     </form>
 </body>
 </html>
