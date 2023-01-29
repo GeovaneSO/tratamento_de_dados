@@ -10,7 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+from django.core.management.utils import get_random_secret_key
 from pathlib import Path
+import os
+import dotenv
+
+
+dotenv.load_dotenv()
+
+
+SECRET_KEY = os.getenv("SECRET_KEY", get_random_secret_key())
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,7 +99,16 @@ WSGI_APPLICATION = "_core.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
+     "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("HOST"),
+        # "HOST": "data_processing_db",
+        "PORT": os.getenv("PORT"),
+    },
+    "db": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }

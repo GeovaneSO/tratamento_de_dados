@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from .forms import UploadFileForm
-from .utils import handle_uploaded_file, create_some, check_list
+from .utils import handle_uploaded_file, create_some, check_list, get_operations
 from .models import Process
+from collections import Counter
+
 
 def home(request):
     form = UploadFileForm()
@@ -17,18 +19,21 @@ def upload(request):
         handle_uploaded_file(request.FILES)
 
         list = []
+
         for obj in Process.objects.all():
-            objects_filtering = Process.objects.filter(store_name=obj.store_name) 
+            objects_filtering = Process.objects.filter(store_name=obj.store_name)
 
             is_contain = check_list(list, obj.store_name)
-
             if not is_contain:
-                a = create_some(objects_filtering)
-                list.append(dict(name=obj.store_name, value=a))
+                operations = get_operations(obj.store_name, objects_filtering)
 
-        return render(
-            request, "success.html", {"list": list}
-        )
+                some_value = create_some(objects_filtering)
+                Counter(operations).elements
+                list.append(
+                    dict(name=obj.store_name, operations=operations, value=some_value)
+                )
+
+        return render(request, "success.html", {"list": list})
 
     else:
         form = UploadFileForm()
