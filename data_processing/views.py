@@ -1,8 +1,11 @@
 from django.shortcuts import render
-from .forms import UploadFileForm
+from .forms import UploadFileForm, RegisterForm, LoginForm
 from .utils import handle_uploaded_file, create_some, check_list, get_operations
 from .models import Process
+from .serializers import LoginSerializer, RegisterSerializer
 from collections import Counter
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django import http
 
 
 def home(request):
@@ -40,3 +43,36 @@ def upload(request):
     return render(
         request=request, template_name="form.html", content_type={"form": form}
     )
+
+
+def register(request):
+
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            serializer = RegisterSerializer(data=form.cleaned_data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+
+            return http.HttpResponse('login.html')
+
+    if request.method == "GET":
+        form = RegisterForm()
+        return render(request, "register.html", {"form": form})
+
+
+def login(request):
+    if request.method == "POST":
+
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            serializer = TokenObtainPairSerializer(data=form.cleaned_data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return home()
+
+    if request.method == 'GET':
+        form = LoginForm()
+        return render(request, "login.html", {"form": form})
+
