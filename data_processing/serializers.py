@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Process
+from .models import Process, Account
 from django.contrib.auth.models import User
 
 
@@ -28,3 +28,24 @@ class ProcessSerializer(serializers.Serializer):
         return Process.objects.create(
             **validated_data, cpf=cpf, store_owner=store_owner
         )
+
+
+class RegisterSerializer(serializers.Serializer):
+    username= serializers.CharField(max_length=50)
+    password = serializers.CharField(max_length=50)
+    last_name = serializers.CharField(max_length=50)
+    first_name = serializers.CharField(max_length=50)
+    email = serializers.EmailField(max_length=50)
+    cpf = serializers.CharField(max_length=50)
+    
+    def create(self, validated_data):
+        # import ipdb; ipdb.set_trace()
+        cpf = validated_data.pop('cpf')
+
+        user=User.objects.create_user(**validated_data)
+        return Account.objects.create(user=user, cpf=cpf)
+
+
+class LoginSerializer(serializers.Serializer):
+    username= serializers.CharField(max_length=50)
+    password = serializers.CharField(max_length=50)
